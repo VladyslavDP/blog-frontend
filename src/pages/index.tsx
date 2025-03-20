@@ -7,7 +7,7 @@ export async function getServerSideProps() {
 
 export default function Home({ data }) {
     return (
-        <div>
+        <div className="text-3xl font-bold underline">
             <h1>data</h1>
             <pre>{JSON.stringify(data, null, 2)}</pre>
         </div>
