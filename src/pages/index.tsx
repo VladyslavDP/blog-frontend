@@ -13,6 +13,11 @@ export default function Home({ data }) {
       <main className="flex min-h-screen items-center justify-center">
         <ThemeSwitcher />
       </main>
+
+      <div className="bg-lightBg dark:bg-darkBg text-lightText dark:text-darkText min-h-screen flex items-center justify-center">
+        <h1 className="text-3xl font-bold">Привет, Темы!</h1>
+      </div>
+
       <h1>data</h1>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>

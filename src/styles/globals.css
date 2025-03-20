@@ -2,9 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+/* globals.css */
+/*html {*/
+/*  !*opacity: 0; !* Прячем контент до загрузки темы *!*!*/
+/*  transition: opacity 0.3s ease-in; !* Плавное отображение *!*/
+/*}*/
+
+/*html[data-theme] {*/
+/*  opacity: 1; !* Показать контент после темы *!*/
+/*}*/
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: Verdana, sans-serif;
   margin: 20px;
   padding: 0;
-  background-color: #f4f4f4;
 }
