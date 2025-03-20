@@ -9,17 +9,31 @@ export async function getServerSideProps() {
 
 export default function Home({ data }) {
   return (
-    <div className="text-3xl font-bold underline">
-      <main className="flex min-h-screen items-center justify-center">
+    <div
+      className="flex
+                 flex-col sm:flex-row"
+    >
+      <aside
+        className="
+          min-h-screen w-full
+          sm:min-w-80 sm:max-w-96 sm:w-full
+          bg-lightBg dark:bg-darkBg
+      "
+      >
+        <div className="sm:fixed">01</div>
+      </aside>
+      <div>
         <ThemeSwitcher />
-      </main>
-
-      <div className="bg-lightBg dark:bg-darkBg text-lightText dark:text-darkText min-h-screen flex items-center justify-center">
-        <h1 className="text-3xl font-bold">Привет, Темы!</h1>
+        <div>
+          <h1>data</h1>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
+        <div className="col-span-2 min-h-96">02</div>
+        <div className="col-span-2 min-h-96">03</div>
+        <div className="col-span-2 min-h-96">04</div>
+        <div className="col-span-2 min-h-96">05</div>
+        <div className="col-span-2 min-h-96">06</div>
       </div>
-
-      <h1>data</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
