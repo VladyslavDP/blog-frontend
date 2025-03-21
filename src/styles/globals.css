@@ -23,4 +23,8 @@ body {
   .hover-primary {
     @apply hover:text-lightPrimary dark:hover:text-darkPrimary
   }
+
+  .disabled-pagination {
+    @apply opacity-50 cursor-not-allowed
+  }
 }

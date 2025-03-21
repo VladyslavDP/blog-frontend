@@ -1,18 +1,28 @@
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-import { Tag, Calendar, Clock } from 'lucide-react';
-import { onEnterOrSpaceKeyDown } from '@/lib/utils';
+import { Calendar, Clock, Tag } from 'lucide-react';
+import { formatDate, formatTimeToRead, onEnterOrSpaceKeyDown } from '@/utils';
+import { generatePosts } from '@/mocks';
+import PaginationWrapper from '@/components/PaginationWrapper';
+import React from 'react';
+
+// export async function getServerSideProps() {
+//   const res = await fetch('http://localhost:4000/post/data');
+//   const data = await res.json();
+//
+//   return { props: { posts: data } };
+// }
 
 export async function getServerSideProps() {
-  const res = await fetch('http://localhost:4000/post/data');
-  const data = await res.json();
-
-  return { props: { posts: data } };
+  const postsData = generatePosts(16, 1, 3); // Генерация на сервере
+  return { props: { posts: postsData } };
 }
 
-const postsPerPage = 5;
-const totalPosts = 15;
+export default function Home({ posts }) {
+  const [page, setPage] = React.useState(5);
+  const handleChange = (value: number) => {
+    setPage(value);
+  };
 
-export default function Home({ data }) {
   return (
     <div
       className="flex
@@ -41,8 +51,14 @@ export default function Home({ data }) {
         <div>
           <h1 className="mb-10 text-2xl font-bold ">Vladyslav Sharapat's blog</h1>
 
-          <div
-            className="blog--wrapper max-w-[500px]
+          <>
+            <PaginationWrapper totalPages={10} page={page} onChange={handleChange} />
+          </>
+
+          {posts.content.map((post) => (
+            <div
+              key={post.id}
+              className="blog--wrapper max-w-[500px]
                 pb-5
                 mb-5
                 border-dashed
@@ -50,48 +66,47 @@ export default function Home({ data }) {
                 dark:border-b-darkPrimary
                 border-b-2
           "
-          >
-            <a
-              href="#"
-              className="block mb-3 text-xl cursor-pointer w-fit font-bold
+            >
+              <a
+                href="#"
+                className="block mb-3 text-xl cursor-pointer w-fit font-bold
                         hover-primary
                         focus-ring"
-              tabIndex={0}
-              onKeyDown={onEnterOrSpaceKeyDown((e) => {
-                console.log('clicked', e);
-              })}
-            >
-              A Basic Introduction to HTML
-            </a>
-            <div className="mb-4">
-              HTML is the foundation of all websites. This guide will walk you through creating your first simple
-              website using HTML.
-            </div>
-            <div className="mb-4">
-              <a tabIndex={0} className="cursor-pointer hover-primary focus-ring">
-                <Tag className="inline h-4" />
-                <span>HTML</span>
+                tabIndex={0}
+                onKeyDown={onEnterOrSpaceKeyDown((e) => {
+                  console.log('clicked', e);
+                })}
+              >
+                {post.title}
               </a>
-              <a tabIndex={0} className="cursor-pointer hover-primary focus-ring">
-                <Tag className="inline h-4" />
-                <span>CSS</span>
-              </a>
-              <a tabIndex={0} className="cursor-pointer hover-primary focus-ring">
-                <Tag className="inline h-4" />
-                <span>WEB</span>
-              </a>
-            </div>
-            <div className="flex justify-between">
-              <div className="blog--publication-date">
-                <Calendar className="inline h-6 mr-2" />
-                <span className="align-middle">Dec 18, 2024</span>
+
+              <div className="mb-4">{post.description}</div>
+              <div className="mb-4">
+                {post.tags.map((tag, index) => (
+                  <a
+                    key={`${post.id}-tag-${index}`}
+                    tabIndex={0}
+                    className="mr-3 cursor-pointer hover-primary focus-ring"
+                  >
+                    <Tag className="inline h-4" />
+                    <span>{tag}</span>
+                  </a>
+                ))}
               </div>
-              <div className="blog--publication-time-to-read">
-                <Clock className="inline h-4 mr-1" />
-                <span className="align-middle">4 min</span>
+              <div className="flex justify-between">
+                {/*<pre>{JSON.stringify(post, null, 2)}</pre>*/}
+                <div className="blog--publication-date">
+                  <Calendar className="inline h-6 mr-2" />
+                  {/*<span className="align-middle">Dec 18, 2024</span>*/}
+                  <span className="align-middle">{formatDate(post.updatedAt)}</span>
+                </div>
+                <div className="blog--publication-time-to-read">
+                  <Clock className="inline h-4 mr-1" />
+                  <span className="align-middle">{formatTimeToRead(post.timeToRead)}</span>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
 
           {/*<div className="col-span-2 min-h-96">02</div>*/}
           {/*<div className="col-span-2 min-h-96">03</div>*/}
