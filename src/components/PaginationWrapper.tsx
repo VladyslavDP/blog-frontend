@@ -8,47 +8,56 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { onEnterOrSpaceKeyDown } from '@/utils';
+import * as React from 'react';
+import { cn } from '@/lib/utils';
 
-type PaginationWrapperType = {
+type PaginationWrapperType = React.ComponentProps<'div'> & {
   totalPages: number;
   page: number;
-  onChange: (page: number) => void;
+  onPageChange: (page: number) => void;
 };
 
-export default function PaginationWrapper({ totalPages, page, onChange }: PaginationWrapperType) {
+function generateArrayAroundNumber(page: number) {
+  const range = 1;
+  return Array.from({ length: range * 2 + 1 }, (_, i) => page - range + i);
+}
+
+function generateArrayLastNumber(totalPages: number) {
+  const startValue = totalPages - 4;
+  const arr: number[] = [];
+  for (let i = startValue; i <= totalPages; i++) {
+    arr.push(i);
+  }
+  return arr;
+}
+
+let render = 0;
+
+export default function PaginationWrapper({
+  totalPages,
+  page,
+  onPageChange,
+  className,
+  ...props
+}: PaginationWrapperType) {
   if (page < 0 || totalPages < 0) throw new Error(`count or page could not be negative`);
   if (page > totalPages) throw new Error('Page could not be more than count'); // here trouble
 
-  const displayLastPages = totalPages - page <= 3;
-
-  function generateArrayAroundNumber(page: number) {
-    const range = 1;
-    return Array.from({ length: range * 2 + 1 }, (_, i) => page - range + i);
-  }
-
-  function generateArrayLastNumber() {
-    const startValue = totalPages - 4;
-    const arr: number[] = [];
-    for (let i = startValue; i <= totalPages; i++) {
-      arr.push(i);
-    }
-    return arr;
-  }
+  const displayFirstPages = page < 5;
+  const displayMiddlePages = !(totalPages - page <= 3);
 
   return (
-    <>
-      <div>count: {totalPages}</div>
-      <div>page: {page}</div>
+    <div className={cn('', className)} {...props}>
       <Pagination>
         <PaginationContent>
           <PaginationItem className={'focus-ring hover-primary cursor-pointer'}>
             <PaginationPrevious
               className={page === 1 ? 'disabled-pagination ' : ''}
               onClick={() => {
-                if (page > 1) onChange(page - 1);
+                if (page > 1) onPageChange(page - 1);
               }}
               onKeyDown={onEnterOrSpaceKeyDown(() => {
-                if (page > 1) onChange(page - 1);
+                if (page > 1) onPageChange(page - 1);
               })}
             />
           </PaginationItem>
@@ -60,8 +69,8 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
               href="#"
               tabIndex={0}
               onClick={() => {
-                if (typeof onChange === 'function') {
-                  onChange.apply(this, [1]);
+                if (typeof onPageChange === 'function') {
+                  onPageChange.apply(this, [1]);
                 }
               }}
             >
@@ -78,8 +87,8 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
                   href="#"
                   tabIndex={0}
                   onClick={() => {
-                    if (typeof onChange === 'function') {
-                      onChange(i);
+                    if (typeof onPageChange === 'function') {
+                      onPageChange(i);
                     }
                   }}
                 >
@@ -87,7 +96,7 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
                 </PaginationLink>
               </PaginationItem>
             ))
-          ) : page < 5 ? (
+          ) : displayFirstPages ? (
             <>
               {Array.from({ length: 4 }, (_, i) => i + 2).map((i) => (
                 <PaginationItem key={i}>
@@ -97,8 +106,8 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
                     href="#"
                     tabIndex={0}
                     onClick={() => {
-                      if (typeof onChange === 'function') {
-                        onChange.apply(this, [i]);
+                      if (typeof onPageChange === 'function') {
+                        onPageChange.apply(this, [i]);
                       }
                     }}
                   >
@@ -116,8 +125,8 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
                   href="#"
                   tabIndex={0}
                   onClick={() => {
-                    if (typeof onChange === 'function') {
-                      onChange.apply(this, [totalPages]);
+                    if (typeof onPageChange === 'function') {
+                      onPageChange.apply(this, [totalPages]);
                     }
                   }}
                 >
@@ -125,7 +134,7 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
                 </PaginationLink>
               </PaginationItem>
             </>
-          ) : !displayLastPages ? (
+          ) : displayMiddlePages ? (
             <>
               <PaginationItem>
                 <PaginationEllipsis />
@@ -138,8 +147,8 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
                     href="#"
                     tabIndex={0}
                     onClick={() => {
-                      if (typeof onChange === 'function') {
-                        onChange.apply(this, [i]);
+                      if (typeof onPageChange === 'function') {
+                        onPageChange.apply(this, [i]);
                       }
                     }}
                   >
@@ -157,8 +166,8 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
                   href="#"
                   tabIndex={0}
                   onClick={() => {
-                    if (typeof onChange === 'function') {
-                      onChange.apply(this, [totalPages]);
+                    if (typeof onPageChange === 'function') {
+                      onPageChange.apply(this, [totalPages]);
                     }
                   }}
                 >
@@ -172,7 +181,7 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
                 <PaginationEllipsis />
               </PaginationItem>
 
-              {generateArrayLastNumber().map((i) => (
+              {generateArrayLastNumber(totalPages).map((i) => (
                 <PaginationItem key={i}>
                   <PaginationLink
                     className="focus-ring hover-primary"
@@ -180,8 +189,8 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
                     href="#"
                     tabIndex={0}
                     onClick={() => {
-                      if (typeof onChange === 'function') {
-                        onChange.apply(this, [i]);
+                      if (typeof onPageChange === 'function') {
+                        onPageChange.apply(this, [i]);
                       }
                     }}
                   >
@@ -196,15 +205,15 @@ export default function PaginationWrapper({ totalPages, page, onChange }: Pagina
             <PaginationNext
               className={page === totalPages ? 'disabled-pagination' : ''}
               onClick={() => {
-                if (page !== totalPages) onChange(page + 1);
+                if (page !== totalPages) onPageChange(page + 1);
               }}
               onKeyDown={onEnterOrSpaceKeyDown(() => {
-                if (page !== totalPages) onChange(page + 1);
+                if (page !== totalPages) onPageChange(page + 1);
               })}
             />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-    </>
+    </div>
   );
 }

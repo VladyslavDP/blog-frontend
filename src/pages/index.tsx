@@ -51,14 +51,11 @@ export default function Home({ posts }) {
         <div>
           <h1 className="mb-10 text-2xl font-bold ">Vladyslav Sharapat's blog</h1>
 
-          <>
-            <PaginationWrapper totalPages={10} page={page} onChange={handleChange} />
-          </>
-
-          {posts.content.map((post) => (
-            <div
-              key={post.id}
-              className="blog--wrapper max-w-[500px]
+          <div className="max-w-[500px]">
+            {posts.content.map((post) => (
+              <div
+                key={post.id}
+                className="blog--wrapper max-w-[500px]
                 pb-5
                 mb-5
                 border-dashed
@@ -66,47 +63,49 @@ export default function Home({ posts }) {
                 dark:border-b-darkPrimary
                 border-b-2
           "
-            >
-              <a
-                href="#"
-                className="block mb-3 text-xl cursor-pointer w-fit font-bold
+              >
+                <a
+                  href="#"
+                  className="block mb-3 text-xl cursor-pointer w-fit font-bold
                         hover-primary
                         focus-ring"
-                tabIndex={0}
-                onKeyDown={onEnterOrSpaceKeyDown((e) => {
-                  console.log('clicked', e);
-                })}
-              >
-                {post.title}
-              </a>
+                  tabIndex={0}
+                  onKeyDown={onEnterOrSpaceKeyDown((e) => {
+                    console.log('clicked', e);
+                  })}
+                >
+                  {post.title}
+                </a>
 
-              <div className="mb-4">{post.description}</div>
-              <div className="mb-4">
-                {post.tags.map((tag, index) => (
-                  <a
-                    key={`${post.id}-tag-${index}`}
-                    tabIndex={0}
-                    className="mr-3 cursor-pointer hover-primary focus-ring"
-                  >
-                    <Tag className="inline h-4" />
-                    <span>{tag}</span>
-                  </a>
-                ))}
-              </div>
-              <div className="flex justify-between">
-                {/*<pre>{JSON.stringify(post, null, 2)}</pre>*/}
-                <div className="blog--publication-date">
-                  <Calendar className="inline h-6 mr-2" />
-                  {/*<span className="align-middle">Dec 18, 2024</span>*/}
-                  <span className="align-middle">{formatDate(post.updatedAt)}</span>
+                <div className="mb-4">{post.description}</div>
+                <div className="mb-4">
+                  {post.tags.map((tag, index) => (
+                    <a
+                      key={`${post.id}-tag-${index}`}
+                      tabIndex={0}
+                      className="mr-3 cursor-pointer hover-primary focus-ring"
+                    >
+                      <Tag className="inline h-4" />
+                      <span>{tag}</span>
+                    </a>
+                  ))}
                 </div>
-                <div className="blog--publication-time-to-read">
-                  <Clock className="inline h-4 mr-1" />
-                  <span className="align-middle">{formatTimeToRead(post.timeToRead)}</span>
+                <div className="flex justify-between">
+                  {/*<pre>{JSON.stringify(post, null, 2)}</pre>*/}
+                  <div className="blog--publication-date">
+                    <Calendar className="inline h-6 mr-2" />
+                    {/*<span className="align-middle">Dec 18, 2024</span>*/}
+                    <span className="align-middle">{formatDate(post.updatedAt)}</span>
+                  </div>
+                  <div className="blog--publication-time-to-read">
+                    <Clock className="inline h-4 mr-1" />
+                    <span className="align-middle">{formatTimeToRead(post.timeToRead)}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+            <PaginationWrapper className={'pt-3'} totalPages={1010} page={page} onPageChange={handleChange} />
+          </div>
 
           {/*<div className="col-span-2 min-h-96">02</div>*/}
           {/*<div className="col-span-2 min-h-96">03</div>*/}
