@@ -3,6 +3,7 @@ import { Calendar, Clock, Tag } from 'lucide-react';
 import { formatDate, formatTimeToRead, onEnterOrSpaceKeyDown } from '@/utils';
 import { generatePosts } from '@/mocks';
 import PaginationWrapper from '@/components/PaginationWrapper';
+import { Image, MapPin, Github, Phone, Linkedin, Mail } from 'lucide-react';
 import React from 'react';
 
 // export async function getServerSideProps() {
@@ -13,7 +14,7 @@ import React from 'react';
 // }
 
 export async function getServerSideProps() {
-  const postsData = generatePosts(16, 1, 3); // Генерация на сервере
+  const postsData = generatePosts(16, 1, 4); // Генерация на сервере
   return { props: { posts: postsData } };
 }
 
@@ -30,17 +31,64 @@ export default function Home({ posts }) {
     >
       <aside
         className="
-          min-h-screen w-full
+          p-4
+          sm:p-0
+          sm:min-h-screen w-full
           sm:min-w-80 sm:max-w-80 sm:w-full
           bg-lightSecondary dark:bg-darkSecondary
       "
       >
-        <div className="sm:fixed">
-          <h2 className="text-lightText dark:text-darkText text-2xl font-semibold">Меню</h2>
-          <ul className="mt-4 space-y-2">
-            <li className="text-lightText dark:text-darkText hover-primary cursor-pointer">Ссылка 1</li>
-            <li className="text-lightText dark:text-darkText hover-primary cursor-pointer">Ссылка 2</li>
-            <li className="text-lightText dark:text-darkText hover-primary cursor-pointer">Ссылка 3</li>
+        <div
+          className="sm:fixed
+                      w-full
+                      max-w-[320px]
+                      h-full
+                      flex
+                      flex-col
+                      px-6
+                      pt-[5%]
+                      sm:items-center
+        "
+        >
+          <div>
+            <div
+              className="
+                border-solid
+                border-4
+                rounded-full
+                max-w-[200px]
+                max-h-[200px]
+                w-full
+                h-full
+                border-lightPrimary
+                dark:border-darkPrimary"
+            >
+              <Image height={200} width={200} />
+            </div>
+          </div>
+
+          <h2 className="text-lightText dark:text-darkText text-2xl font-semibold my-6">Vladyslav Sharapat</h2>
+          <ul className="mt-4 space-y-4 self-start">
+            <li className="text-lightText dark:text-darkText hover-primary flex gap-2">
+              <MapPin />
+              <span>Wrocław, Poland</span>
+            </li>
+            <li className="text-lightText dark:text-darkText hover-primary cursor-pointer">
+              <a className="flex gap-2" href="https://github.com/VladyslavDP" target="_blank">
+                <Github />
+                VladyslavDP
+              </a>
+            </li>
+            <li className="text-lightText dark:text-darkText hover-primary cursor-pointer flex gap-2">
+              <a className="flex gap-2" href="https://www.linkedin.com/in/vladyslav-sharapat/" target="_blank">
+                <Linkedin />
+                vladyslav-sharapat
+              </a>
+            </li>
+            <li className="text-lightText dark:text-darkText hover-primary cursor-pointer flex gap-2">
+              <Mail />
+              <span>v.sharapat@gmail.com</span>
+            </li>
           </ul>
         </div>
       </aside>
@@ -49,13 +97,14 @@ export default function Home({ posts }) {
           <ThemeSwitcher />
         </div>
         <div>
-          <h1 className="mb-10 text-2xl font-bold ">Vladyslav Sharapat's blog</h1>
+          <h1 className="mb-10 text-2xl font-bold ">Articles</h1>
 
-          <div className="max-w-[500px]">
-            {posts.content.map((post) => (
-              <div
-                key={post.id}
-                className="blog--wrapper max-w-[500px]
+          <div className="flex flex-col justify-between  max-w-[500px] min-h-[85vh] pb-3">
+            <div className="flex flex-col h-[100%]  ">
+              {posts.content.map((post) => (
+                <div
+                  key={post.id}
+                  className="blog--wrapper
                 pb-5
                 mb-5
                 border-dashed
@@ -63,55 +112,50 @@ export default function Home({ posts }) {
                 dark:border-b-darkPrimary
                 border-b-2
           "
-              >
-                <a
-                  href="#"
-                  className="block mb-3 text-xl cursor-pointer w-fit font-bold
+                >
+                  <a
+                    href="#"
+                    className="block mb-3 text-xl cursor-pointer w-fit font-bold
                         hover-primary
                         focus-ring"
-                  tabIndex={0}
-                  onKeyDown={onEnterOrSpaceKeyDown((e) => {
-                    console.log('clicked', e);
-                  })}
-                >
-                  {post.title}
-                </a>
+                    tabIndex={0}
+                    onKeyDown={onEnterOrSpaceKeyDown((e) => {
+                      console.log('clicked', e);
+                    })}
+                  >
+                    {post.title}
+                  </a>
 
-                <div className="mb-4">{post.description}</div>
-                <div className="mb-4">
-                  {post.tags.map((tag, index) => (
-                    <a
-                      key={`${post.id}-tag-${index}`}
-                      tabIndex={0}
-                      className="mr-3 cursor-pointer hover-primary focus-ring"
-                    >
-                      <Tag className="inline h-4" />
-                      <span>{tag}</span>
-                    </a>
-                  ))}
-                </div>
-                <div className="flex justify-between">
-                  {/*<pre>{JSON.stringify(post, null, 2)}</pre>*/}
-                  <div className="blog--publication-date">
-                    <Calendar className="inline h-6 mr-2" />
-                    {/*<span className="align-middle">Dec 18, 2024</span>*/}
-                    <span className="align-middle">{formatDate(post.updatedAt)}</span>
+                  <div className="mb-4">{post.description}</div>
+                  <div className="mb-4">
+                    {post.tags.map((tag, index) => (
+                      <a
+                        key={`${post.id}-tag-${index}`}
+                        tabIndex={0}
+                        className="mr-3 cursor-pointer hover-primary focus-ring"
+                      >
+                        <Tag className="inline h-4" />
+                        <span>{tag}</span>
+                      </a>
+                    ))}
                   </div>
-                  <div className="blog--publication-time-to-read">
-                    <Clock className="inline h-4 mr-1" />
-                    <span className="align-middle">{formatTimeToRead(post.timeToRead)}</span>
+                  <div className="flex justify-between">
+                    {/*<pre>{JSON.stringify(post, null, 2)}</pre>*/}
+                    <div className="blog--publication-date">
+                      <Calendar className="inline h-6 mr-2" />
+                      {/*<span className="align-middle">Dec 18, 2024</span>*/}
+                      <span className="align-middle">{formatDate(post.updatedAt)}</span>
+                    </div>
+                    <div className="blog--publication-time-to-read">
+                      <Clock className="inline h-4 mr-1" />
+                      <span className="align-middle">{formatTimeToRead(post.timeToRead)}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-            <PaginationWrapper className={'pt-3'} totalPages={1010} page={page} onPageChange={handleChange} />
+              ))}
+            </div>
+            <PaginationWrapper className="pt-4" totalPages={1010} page={page} onPageChange={handleChange} />
           </div>
-
-          {/*<div className="col-span-2 min-h-96">02</div>*/}
-          {/*<div className="col-span-2 min-h-96">03</div>*/}
-          {/*<div className="col-span-2 min-h-96">04</div>*/}
-          {/*<div className="col-span-2 min-h-96">05</div>*/}
-          {/*<div className="col-span-2 min-h-96">06</div>*/}
         </div>
       </main>
     </div>
