@@ -4,25 +4,38 @@ import { formatDate, formatTimeToRead, onEnterOrSpaceKeyDown } from '@/utils';
 import { generatePosts } from '@/mocks';
 import PaginationWrapper from '@/components/PaginationWrapper';
 import { Image, MapPin, Github, Phone, Linkedin, Mail } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { httpClient } from '@/services/http-client';
+import { useQuery } from '@tanstack/react-query';
 
-// export async function getServerSideProps() {
-//   const res = await fetch('http://localhost:4000/post/data');
-//   const data = await res.json();
-//
-//   return { props: { posts: data } };
-// }
+export async function getServerSideProps(context) {
+  const fullUrl = `https://${context.req.headers.host}${context.req.url}`;
+  console.log('Full URL:', fullUrl);
 
-export async function getServerSideProps() {
-  const postsData = generatePosts(16, 1, 4); // Генерация на сервере
-  return { props: { posts: postsData } };
+  const postsData = generatePosts(16, 1, 3); // Генерация на сервере
+  const realData = await httpClient.post.postControllerGetPosts({ page: 1, size: 10 });
+
+  realData.content = realData?.content?.map((item) => ({
+    ...item,
+    createdAt: item.createdAt instanceof Date ? item.createdAt.toISOString() : item.createdAt,
+    updatedAt: item.updatedAt instanceof Date ? item.updatedAt.toISOString() : item.updatedAt,
+  }));
+
+  return { props: { posts: postsData, realData: realData } };
 }
 
-export default function Home({ posts }) {
-  const [page, setPage] = React.useState(5);
+export default function Home({ posts, realData }) {
+  const [page, setPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
+
   const handleChange = (value: number) => {
     setPage(value);
   };
+
+  const { data, refetch } = useQuery({
+    queryKey: ['posts', page, pageSize],
+    queryFn: () => httpClient.post.postControllerGetPosts({ page, size: pageSize }),
+  });
 
   return (
     <div
