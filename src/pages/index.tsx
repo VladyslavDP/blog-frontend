@@ -7,6 +7,8 @@ import { Image, MapPin, Github, Phone, Linkedin, Mail } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { httpClient } from '@/services/http-client';
 import { useQuery } from '@tanstack/react-query';
+import { openModal, useAppDispatch } from '@/store';
+import { Modal } from '@/components/Modal';
 
 export async function getServerSideProps(context) {
   const fullUrl = `https://${context.req.headers.host}${context.req.url}`;
@@ -36,6 +38,8 @@ export default function Home({ posts, realData }) {
     queryKey: ['posts', page, pageSize],
     queryFn: () => httpClient.post.postControllerGetPosts({ page, size: pageSize }),
   });
+
+  const dispatch = useAppDispatch();
 
   return (
     <div
@@ -113,6 +117,26 @@ export default function Home({ posts, realData }) {
           <h1 className="mb-10 text-2xl font-bold ">Articles</h1>
 
           <div className="flex flex-col justify-between  max-w-[500px] min-h-[85vh] pb-3">
+            <div>
+              <h1>Добро пожаловать в приложение!</h1>
+              <button
+                onClick={() => dispatch(openModal('Пример модалки'))}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: 'blue',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                }}
+              >
+                Открыть модалку
+              </button>
+
+              {/* Добавляем модалку */}
+              <Modal />
+            </div>
+
             <div className="flex flex-col h-[100%]  ">
               {posts.content.map((post) => (
                 <div

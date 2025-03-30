@@ -1,5 +1,10 @@
 import { AuthApi, PostApi, TagApi, Configuration } from '@/api';
 import { env } from '@/env';
+import store from '@/store';
+import { showLoader, hideLoader } from '@/store';
+import { delay } from '@/utils';
+
+const isClient = typeof window !== 'undefined';
 
 export const createApiConfig = () => {
   return new Configuration({
@@ -7,17 +12,22 @@ export const createApiConfig = () => {
     middleware: [
       {
         pre: async ({ url, init, ...rest }) => {
-          const isClient = typeof window !== 'undefined';
           console.log(isClient ? '[Client]' : '[Server]', 'Запрос отправляется:', url, init);
 
           if (isClient) {
-            console.log('Client-side logic (e.g., opening modal)');
+            await delay(() => store.dispatch(showLoader()), 0);
           }
         },
         post: async ({ url, response }) => {
           console.log('Ответ:', url, response.status);
+          if (isClient) {
+            await delay(() => store.dispatch(hideLoader()));
+          }
         },
         onError: async ({ url, error }) => {
+          if (isClient) {
+            await delay(() => store.dispatch(hideLoader()));
+          }
           console.error('Ошибка запроса:', url, error);
         },
       },

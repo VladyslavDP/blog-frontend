@@ -17,3 +17,5 @@ export function formatDate(dateString: string): string {
 export function formatTimeToRead(minutes: number): string {
   return `${minutes} min`;
 }
+
+export const delay = (cb: () => void, timeOut = 1000) => Promise.resolve(setTimeout(cb, timeOut));
