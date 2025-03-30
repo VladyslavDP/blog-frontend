@@ -47,38 +47,16 @@ export default function Home({ posts, realData }) {
                  flex-col sm:flex-row"
     >
       <aside
-        className="
-          p-4
-          sm:p-0
-          sm:min-h-screen w-full
-          sm:min-w-80 sm:max-w-80 sm:w-full
-          bg-lightSecondary dark:bg-darkSecondary
-      "
+        className={
+          'p-4 sm:p-0 sm:min-h-screen w-full sm:min-w-80 sm:max-w-80 sm:w-full bg-lightSecondary dark:bg-darkSecondary'
+        }
       >
-        <div
-          className="sm:fixed
-                      w-full
-                      max-w-[320px]
-                      h-full
-                      flex
-                      flex-col
-                      px-6
-                      pt-[5%]
-                      sm:items-center
-        "
-        >
+        <div className={'sm:fixed w-full max-w-[320px] h-full flex flex-col px-6 pt-[5%] sm:items-center'}>
           <div>
             <div
-              className="
-                border-solid
-                border-4
-                rounded-full
-                max-w-[200px]
-                max-h-[200px]
-                w-full
-                h-full
-                border-lightPrimary
-                dark:border-darkPrimary"
+              className={
+                'border-solid border-4 rounded-full max-w-[200px] max-h-[200px] w-full h-full border-lightPrimary dark:border-darkPrimary'
+              }
             >
               <Image height={200} width={200} />
             </div>

@@ -2,7 +2,8 @@ import { AuthApi, PostApi, TagApi, Configuration } from '@/api';
 import { env } from '@/env';
 import store from '@/store';
 import { showLoader, hideLoader } from '@/store';
-import { delay } from '@/utils';
+import { delay, handleApiError } from '@/utils';
+import { toast } from 'react-toastify';
 
 const isClient = typeof window !== 'undefined';
 
@@ -21,14 +22,24 @@ export const createApiConfig = () => {
         post: async ({ url, response }) => {
           console.log('Ответ:', url, response.status);
           if (isClient) {
-            await delay(() => store.dispatch(hideLoader()));
+            delay(() => store.dispatch(hideLoader())).then(() => {
+              if (!response.ok) {
+                const error = new Error(`[Ошибка запроса] Код: ${response.status}`);
+                handleApiError(error);
+              } else {
+                toast.success('Запрос выполнен успешно!');
+              }
+            });
           }
+          return response;
         },
         onError: async ({ url, error }) => {
           if (isClient) {
             await delay(() => store.dispatch(hideLoader()));
           }
-          console.error('Ошибка запроса:', url, error);
+
+          handleApiError(error);
+          throw error;
         },
       },
     ],

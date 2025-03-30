@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 import { KeyboardEventHandler } from 'react';
 
 export function onEnterOrSpaceKeyDown(cb: (e) => void): KeyboardEventHandler<HTMLElement> {
@@ -18,4 +20,11 @@ export function formatTimeToRead(minutes: number): string {
   return `${minutes} min`;
 }
 
-export const delay = (cb: () => void, timeOut = 1000) => Promise.resolve(setTimeout(cb, timeOut));
+export const delay = (cb: () => void, timeOut = 500) => Promise.resolve(setTimeout(cb, timeOut));
+
+export function handleApiError(error: unknown): void {
+  const errorMessage = error instanceof Error ? error.message : 'Что-то пошло не так';
+
+  console.error('[Ошибка API]:', error);
+  toast.error(errorMessage);
+}
