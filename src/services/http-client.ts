@@ -1,8 +1,9 @@
 import { AuthApi, PostApi, TagApi, Configuration } from '@/api';
+import { env } from '@/env';
 
 export const createApiConfig = () => {
   return new Configuration({
-    basePath: process.env.PUBLIC_API_URL,
+    basePath: env.API_URL,
     middleware: [
       {
         pre: async ({ url, init, ...rest }) => {
