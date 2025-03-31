@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }) {
         <QueryClientProvider client={queryClient}>
           <Loader />
           <ToastContainer
-            position="top-right"
+            position="top-center"
             autoClose={env.NEXT_PUBLIC_AUTO_CLOSE_TIMEOUT}
             hideProgressBar
             closeOnClick

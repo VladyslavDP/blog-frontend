@@ -4,6 +4,7 @@ import store from '@/store';
 import { showLoader, hideLoader } from '@/store';
 import { delay, handleApiError } from '@/utils';
 import { toast } from 'react-toastify';
+import { EHttpMethod } from '@/common';
 
 const isClient = typeof window !== 'undefined';
 
@@ -19,7 +20,7 @@ export const createApiConfig = () => {
             await delay(() => store.dispatch(showLoader()), 0);
           }
         },
-        post: async ({ url, response }) => {
+        post: async ({ url, response, init: { method } }) => {
           console.log('Ответ:', url, response.status);
           if (isClient) {
             delay(() => store.dispatch(hideLoader())).then(() => {
@@ -27,7 +28,15 @@ export const createApiConfig = () => {
                 const error = new Error(`[Ошибка запроса] Код: ${response.status}`);
                 handleApiError(error);
               } else {
-                toast.success('Запрос выполнен успешно!');
+                if ([EHttpMethod.POST, EHttpMethod.PUT].includes(method as EHttpMethod)) {
+                  toast.success('Data saved');
+                }
+                if (EHttpMethod.PATCH === method) {
+                  toast.success('Data updated');
+                }
+                if (EHttpMethod.DELETE === method) {
+                  toast.success('Data deleted');
+                }
               }
             });
           }

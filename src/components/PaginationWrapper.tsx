@@ -31,8 +31,6 @@ function generateArrayLastNumber(totalPages: number) {
   return arr;
 }
 
-let render = 0;
-
 export default function PaginationWrapper({
   totalPages,
   page,
