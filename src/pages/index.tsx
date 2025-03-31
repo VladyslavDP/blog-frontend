@@ -1,10 +1,9 @@
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-import { Calendar, Clock, Tag } from 'lucide-react';
+import { Calendar, Clock, Github, Image, Linkedin, Mail, MapPin, Tag } from 'lucide-react';
 import { formatDate, formatTimeToRead, onEnterOrSpaceKeyDown } from '@/utils';
 import { generatePosts } from '@/mocks';
 import PaginationWrapper from '@/components/PaginationWrapper';
-import { Image, MapPin, Github, Phone, Linkedin, Mail } from 'lucide-react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { httpClient } from '@/services/http-client';
 import { useQuery } from '@tanstack/react-query';
 import { openModal, useAppDispatch } from '@/store';
@@ -14,14 +13,8 @@ export async function getServerSideProps(context) {
   const fullUrl = `https://${context.req.headers.host}${context.req.url}`;
   console.log('Full URL:', fullUrl);
 
-  const postsData = generatePosts(16, 1, 3); // Генерация на сервере
+  const postsData = generatePosts(16, 1, 3);
   const realData = await httpClient.post.postControllerGetPosts({ page: 1, size: 10 });
-
-  realData.content = realData?.content?.map((item) => ({
-    ...item,
-    createdAt: item.createdAt instanceof Date ? item.createdAt.toISOString() : item.createdAt,
-    updatedAt: item.updatedAt instanceof Date ? item.updatedAt.toISOString() : item.updatedAt,
-  }));
 
   return { props: { posts: postsData, realData: realData } };
 }
@@ -42,10 +35,7 @@ export default function Home({ posts, realData }) {
   const dispatch = useAppDispatch();
 
   return (
-    <div
-      className="flex
-                 flex-col sm:flex-row"
-    >
+    <div className={'flex flex-col sm:flex-row'}>
       <aside
         className={
           'p-4 sm:p-0 sm:min-h-screen w-full sm:min-w-80 sm:max-w-80 sm:w-full bg-lightSecondary dark:bg-darkSecondary'

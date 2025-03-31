@@ -51,16 +51,16 @@ export interface PostDto {
     timeToRead: number;
     /**
      * The creation timestamp of the post
-     * @type {Date}
+     * @type {string}
      * @memberof PostDto
      */
-    createdAt: Date;
+    createdAt: string;
     /**
      * The last update timestamp of the post
-     * @type {Date}
+     * @type {string}
      * @memberof PostDto
      */
-    updatedAt: Date;
+    updatedAt: string;
 }
 
 /**
@@ -92,8 +92,8 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'slug': json['slug'],
         'tags': json['tags'],
         'timeToRead': json['timeToRead'],
-        'createdAt': (new Date(json['createdAt'])),
-        'updatedAt': (new Date(json['updatedAt'])),
+        'createdAt': json['createdAt'],
+        'updatedAt': json['updatedAt'],
     };
 }
 
@@ -113,8 +113,8 @@ export function PostDtoToJSONTyped(value?: PostDto | null, ignoreDiscriminator: 
         'slug': value['slug'],
         'tags': value['tags'],
         'timeToRead': value['timeToRead'],
-        'createdAt': ((value['createdAt']).toISOString()),
-        'updatedAt': ((value['updatedAt']).toISOString()),
+        'createdAt': value['createdAt'],
+        'updatedAt': value['updatedAt'],
     };
 }
 

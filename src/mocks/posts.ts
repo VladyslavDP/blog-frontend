@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'; // Для генерации уникальных id
+import { v4 as uuidv4 } from 'uuid';
 
 const tags = ['javascript', 'typescript', 'react', 'nestjs', 'backend', 'frontend', 'nodejs', 'css'];
 
