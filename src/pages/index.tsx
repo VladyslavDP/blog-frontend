@@ -6,8 +6,7 @@ import PaginationWrapper from '@/components/PaginationWrapper';
 import React from 'react';
 import { httpClient } from '@/services/http-client';
 import { useQuery } from '@tanstack/react-query';
-import { openModal, useAppDispatch } from '@/store';
-import { Modal } from '@/components/Modal';
+import { useAppDispatch, openDialog } from '@/store';
 
 export async function getServerSideProps(context) {
   const fullUrl = `https://${context.req.headers.host}${context.req.url}`;
@@ -88,7 +87,16 @@ export default function Home({ posts, realData }) {
             <div>
               <h1>Добро пожаловать в приложение!</h1>
               <button
-                onClick={() => dispatch(openModal('Пример модалки'))}
+                onClick={() =>
+                  dispatch(
+                    openDialog({
+                      title: 'hello',
+                      onSubmit: async () => {
+                        console.log('work');
+                      },
+                    }),
+                  )
+                }
                 style={{
                   padding: '10px 20px',
                   backgroundColor: 'blue',
@@ -100,9 +108,6 @@ export default function Home({ posts, realData }) {
               >
                 Открыть модалку
               </button>
-
-              {/* Добавляем модалку */}
-              <Modal />
             </div>
 
             <div className="flex flex-col h-[100%]  ">
@@ -145,10 +150,8 @@ export default function Home({ posts, realData }) {
                     ))}
                   </div>
                   <div className="flex justify-between">
-                    {/*<pre>{JSON.stringify(post, null, 2)}</pre>*/}
                     <div className="blog--publication-date">
                       <Calendar className="inline h-6 mr-2" />
-                      {/*<span className="align-middle">Dec 18, 2024</span>*/}
                       <span className="align-middle">{formatDate(post.updatedAt)}</span>
                     </div>
                     <div className="blog--publication-time-to-read">

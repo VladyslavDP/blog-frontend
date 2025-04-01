@@ -7,6 +7,7 @@ import store from '@/store';
 import { Loader } from '@/components/Loader';
 import { env } from '@/env';
 import { useTheme } from 'next-themes';
+import ControlledDialog from '@/components/ControlledDialog';
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ export default function App({ Component, pageProps }) {
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <Loader />
+          <ControlledDialog />
           <ToastContainer
             position="top-center"
             autoClose={env.NEXT_PUBLIC_AUTO_CLOSE_TIMEOUT}

@@ -1,17 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ControlledDialogProps, defaultControlledDialogProps } from '@/components/ControlledDialog';
 
 type uiSliceType = {
   isLoading: boolean;
-  isOpen: boolean;
-  modalType: string | null;
+  isModalOpen: boolean;
+  modal: Partial<ControlledDialogProps>;
 };
 
 const uiSlice = createSlice({
   name: 'ui',
   initialState: {
     isLoading: false,
-    isOpen: false,
-    modalType: 'Пример модалки',
+    isModalOpen: false,
+    modal: defaultControlledDialogProps,
   } as uiSliceType,
   reducers: {
     showLoader: (state: uiSliceType) => {
@@ -20,16 +21,15 @@ const uiSlice = createSlice({
     hideLoader: (state: uiSliceType) => {
       state.isLoading = false;
     },
-    openModal: (state: uiSliceType, action: PayloadAction<string>) => {
-      state.isOpen = true;
-      state.modalType = action.payload;
+    openDialog: (state: uiSliceType, action: PayloadAction<Partial<ControlledDialogProps>>) => {
+      state.isModalOpen = true;
+      state.modal = { ...state.modal, ...action.payload };
     },
-    closeModal: (state: uiSliceType) => {
-      state.isOpen = false;
-      state.modalType = null;
+    closeDialog: (state: uiSliceType) => {
+      state.isModalOpen = false;
     },
   },
 });
 
-export const { showLoader, hideLoader, openModal, closeModal } = uiSlice.actions;
+export const { showLoader, hideLoader, openDialog, closeDialog } = uiSlice.actions;
 export default uiSlice.reducer;
