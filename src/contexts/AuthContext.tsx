@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const response = await httpClient.auth.authControllerSignIn({ authUserSignInDto: { email, password } });
 
       if (instanceOfCognitoSignInTokenResponseDto(response)) {
-        const { AccessToken, RefreshToken } = response;
+        const { AccessToken, RefreshToken, ExpiresIn } = response;
 
         if (!AccessToken || !RefreshToken) {
           throw new Error('Missing access or refresh token');

@@ -8,6 +8,7 @@ import { Loader } from '@/components/Loader';
 import { env } from '@/env';
 import ControlledDialog from '@/components/ControlledDialog';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ControlSticker } from '@/components/ControlSticker';
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ export default function App({ Component, pageProps }) {
               pauseOnHover
               draggable
             />
+            <ControlSticker />
             <Component {...pageProps} />
           </QueryClientProvider>
         </Provider>

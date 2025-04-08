@@ -77,7 +77,7 @@ export default function Home({ posts, realData }) {
         </div>
       </aside>
       <main className="flex-1 bg-lightBg dark:bg-darkBg text-lightText dark:text-darkText p-8">
-        <div className="fixed right-10 top-10">
+        <div className="fixed right-10 top-10 z-10">
           <ThemeSwitcher />
         </div>
         <div>
