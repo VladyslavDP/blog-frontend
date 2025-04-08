@@ -2,13 +2,11 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { openDialog, useAppDispatch } from '@/store';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-import { httpClient } from '@/services/http-client';
-import { useMutation } from '@tanstack/react-query';
-import { type AuthUserSignInDto } from '@/api';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PASSWORD_PATTERN } from '@/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 const LoginSchema = z.object({
   email: z.string().email('Invalid email address').nonempty('Email is required'),
@@ -25,9 +23,7 @@ export default function LoginPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const authenticateUser = useMutation({
-    mutationFn: (payload: AuthUserSignInDto) => httpClient.auth.authControllerSignIn({ authUserSignInDto: payload }),
-  });
+  const { login } = useAuth();
 
   const {
     register,
@@ -40,15 +36,14 @@ export default function LoginPage() {
 
   const handleLogin = async (data: LoginFormInputs) => {
     try {
-      await authenticateUser.mutateAsync(data);
-      router.push('/dashboard');
+      await login(data);
     } catch (error) {
       console.log(error);
       dispatch(
         openDialog({
           title: 'Login Failed',
           description: 'Invalid email or password. Please try again.',
-          onSubmit: () => console.log('Dialog closed'),
+          // onSubmit: () => console.log('Dialog closed'),
         }),
       );
     }

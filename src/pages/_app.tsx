@@ -7,27 +7,30 @@ import store from '@/store';
 import { Loader } from '@/components/Loader';
 import { env } from '@/env';
 import ControlledDialog from '@/components/ControlledDialog';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
   return (
     <ThemeProvider>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <Loader />
-          <ControlledDialog />
-          <ToastContainer
-            position="top-center"
-            autoClose={env.NEXT_PUBLIC_AUTO_CLOSE_TIMEOUT}
-            hideProgressBar
-            closeOnClick
-            pauseOnHover
-            draggable
-          />
-          <Component {...pageProps} />
-        </QueryClientProvider>
-      </Provider>
+      <AuthProvider>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <Loader />
+            <ControlledDialog />
+            <ToastContainer
+              position="top-center"
+              autoClose={env.NEXT_PUBLIC_AUTO_CLOSE_TIMEOUT}
+              hideProgressBar
+              closeOnClick
+              pauseOnHover
+              draggable
+            />
+            <Component {...pageProps} />
+          </QueryClientProvider>
+        </Provider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

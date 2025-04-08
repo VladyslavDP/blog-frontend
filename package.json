@@ -8,7 +8,7 @@
     "start": "next start",
     "prettier:write": "prettier --config .prettierrc --write .",
     "prettier:check": "prettier --config .prettierrc --check .",
-    "generate:api": "rm -rf src/api && npx @openapitools/openapi-generator-cli generate -i $HOST -g typescript-fetch -o ./src/api"
+    "generate:api": "rm -rf src/api && npx @openapitools/openapi-generator-cli generate -i $HOST -g typescript-fetch -o ./src/api --additional-properties=modelPropertyNaming=original"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

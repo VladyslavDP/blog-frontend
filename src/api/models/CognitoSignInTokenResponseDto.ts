@@ -24,28 +24,28 @@ export interface CognitoSignInTokenResponseDto {
      * @type {string}
      * @memberof CognitoSignInTokenResponseDto
      */
-    accessToken: string;
+    AccessToken: string;
     /**
      * Refresh token for renewing the session
      * @type {string}
      * @memberof CognitoSignInTokenResponseDto
      */
-    refreshToken: string;
+    RefreshToken: string;
     /**
      * Expiration time of the access token in seconds
      * @type {number}
      * @memberof CognitoSignInTokenResponseDto
      */
-    expiresIn: number;
+    ExpiresIn: number;
 }
 
 /**
  * Check if a given object implements the CognitoSignInTokenResponseDto interface.
  */
 export function instanceOfCognitoSignInTokenResponseDto(value: object): value is CognitoSignInTokenResponseDto {
-    if (!('accessToken' in value) || value['accessToken'] === undefined) return false;
-    if (!('refreshToken' in value) || value['refreshToken'] === undefined) return false;
-    if (!('expiresIn' in value) || value['expiresIn'] === undefined) return false;
+    if (!('AccessToken' in value) || value['AccessToken'] === undefined) return false;
+    if (!('RefreshToken' in value) || value['RefreshToken'] === undefined) return false;
+    if (!('ExpiresIn' in value) || value['ExpiresIn'] === undefined) return false;
     return true;
 }
 
@@ -59,9 +59,9 @@ export function CognitoSignInTokenResponseDtoFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'accessToken': json['AccessToken'],
-        'refreshToken': json['RefreshToken'],
-        'expiresIn': json['ExpiresIn'],
+        'AccessToken': json['AccessToken'],
+        'RefreshToken': json['RefreshToken'],
+        'ExpiresIn': json['ExpiresIn'],
     };
 }
 
@@ -76,9 +76,9 @@ export function CognitoSignInTokenResponseDtoToJSONTyped(value?: CognitoSignInTo
 
     return {
         
-        'AccessToken': value['accessToken'],
-        'RefreshToken': value['refreshToken'],
-        'ExpiresIn': value['expiresIn'],
+        'AccessToken': value['AccessToken'],
+        'RefreshToken': value['RefreshToken'],
+        'ExpiresIn': value['ExpiresIn'],
     };
 }
 

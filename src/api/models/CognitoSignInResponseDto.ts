@@ -24,14 +24,14 @@ export interface CognitoSignInResponseDto {
      * @type {string}
      * @memberof CognitoSignInResponseDto
      */
-    challengeName: string;
+    ChallengeName: string;
 }
 
 /**
  * Check if a given object implements the CognitoSignInResponseDto interface.
  */
 export function instanceOfCognitoSignInResponseDto(value: object): value is CognitoSignInResponseDto {
-    if (!('challengeName' in value) || value['challengeName'] === undefined) return false;
+    if (!('ChallengeName' in value) || value['ChallengeName'] === undefined) return false;
     return true;
 }
 
@@ -45,7 +45,7 @@ export function CognitoSignInResponseDtoFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'challengeName': json['ChallengeName'],
+        'ChallengeName': json['ChallengeName'],
     };
 }
 
@@ -60,7 +60,7 @@ export function CognitoSignInResponseDtoToJSONTyped(value?: CognitoSignInRespons
 
     return {
         
-        'ChallengeName': value['challengeName'],
+        'ChallengeName': value['ChallengeName'],
     };
 }
 
