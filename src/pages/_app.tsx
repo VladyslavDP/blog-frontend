@@ -6,14 +6,11 @@ import { ToastContainer } from 'react-toastify';
 import store from '@/store';
 import { Loader } from '@/components/Loader';
 import { env } from '@/env';
-import { useTheme } from 'next-themes';
 import ControlledDialog from '@/components/ControlledDialog';
 
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
-  const { theme } = useTheme();
-
   return (
     <ThemeProvider>
       <Provider store={store}>
@@ -27,7 +24,6 @@ export default function App({ Component, pageProps }) {
             closeOnClick
             pauseOnHover
             draggable
-            theme={theme}
           />
           <Component {...pageProps} />
         </QueryClientProvider>

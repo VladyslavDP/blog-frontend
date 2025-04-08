@@ -23,7 +23,7 @@ export type ControlledDialogProps = {
       text?: string;
     };
   };
-  onSubmit?: () => Promise<void>;
+  onSubmit?: () => void | Promise<void>;
   onClose?: () => Promise<void>;
 };
 
@@ -45,8 +45,6 @@ function ControlledDialog(data: Partial<ControlledDialogProps>) {
   const { isModalOpen, modal } = useAppSelector((state) => state.ui);
 
   const { title, subTitle, description, size, buttons, onSubmit, onClose } = { ...data, ...modal };
-
-  console.log(size);
 
   const dispatch = useAppDispatch();
 

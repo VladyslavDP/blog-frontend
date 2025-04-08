@@ -11,6 +11,7 @@
     "generate:api": "rm -rf src/api && npx @openapitools/openapi-generator-cli generate -i $HOST -g typescript-fetch -o ./src/api"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
     "@openapitools/openapi-generator-cli": "^2.18.4",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
@@ -26,6 +27,7 @@
     "next-themes": "^0.4.6",
     "react": "latest",
     "react-dom": "latest",
+    "react-hook-form": "^7.55.0",
     "react-redux": "^9.2.0",
     "react-toastify": "^11.0.5",
     "tailwind-merge": "^3.0.2",
