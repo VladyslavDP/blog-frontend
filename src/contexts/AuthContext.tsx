@@ -4,6 +4,7 @@ import { httpClient } from '@/services/http-client';
 import { AuthUserSignInDto, instanceOfCognitoSignInResponseDto, instanceOfCognitoSignInTokenResponseDto } from '@/api';
 
 interface AuthContextProps {
+  isCheckingAuth: boolean;
   isAuthorized: boolean;
   accessToken: string | null;
   login: (data: AuthUserSignInDto) => Promise<void>;
@@ -15,12 +16,14 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true); // Новый флаг
   const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
+        setIsCheckingAuth(true);
+        const token = localStorage.getItem('AccessToken');
         if (token) {
           setAccessToken(token);
           setIsAuthorized(true);
@@ -28,6 +31,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       } catch (error) {
         console.error('Auth check error', error);
         setIsAuthorized(false);
+      } finally {
+        setIsCheckingAuth(false);
       }
     };
 
@@ -70,14 +75,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('AccessToken');
     setAccessToken(null);
     setIsAuthorized(false);
 
     router.push('/login');
   };
 
-  return <AuthContext.Provider value={{ isAuthorized, accessToken, login, logout }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ isAuthorized, isCheckingAuth, accessToken, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
